@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Supplier;
+use App\Domain\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SupplierFactory extends Factory
@@ -12,10 +12,9 @@ class SupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_supplier' => 'SUP-'.fake()->unique()->numerify('#####'),
-            'nama_supplier' => fake()->company(),
-            'alamat' => fake()->address(),
-            'no_telp' => fake()->phoneNumber(),
+            'name' => fake()->company(),
+            'contact' => fake()->phoneNumber(),
+            'address' => fake()->address(),
         ];
     }
 }

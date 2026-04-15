@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\CashFlow;
-use App\Models\Shift;
+use App\Domain\Models\CashFlow;
+use App\Domain\Models\Shift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CashFlowFactory extends Factory
@@ -14,10 +14,9 @@ class CashFlowFactory extends Factory
     {
         return [
             'shift_id' => Shift::factory(),
-            'tgl_flow' => now(),
-            'keterangan' => fake()->sentence(),
-            'masuk' => fake()->randomElement([fake()->numberBetween(10000, 100000), 0]),
-            'keluar' => fake()->randomElement([0, fake()->numberBetween(5000, 50000)]),
+            'type' => fake()->randomElement(['in', 'out']),
+            'amount' => fake()->numberBetween(5000, 100000),
+            'source' => fake()->word(),
         ];
     }
 }

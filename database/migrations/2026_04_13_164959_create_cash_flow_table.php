@@ -6,25 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('cash_flow', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shift_id')->constrained('shifts');
-            $table->timestamp('tgl_flow')->useCurrent();
-            $table->text('keterangan')->nullable();
-            $table->decimal('masuk', 15, 2)->default(0);
-            $table->decimal('keluar', 15, 2)->default(0);
+            $table->string('type', 10); // in / out
+            $table->decimal('amount', 15, 2);
+            $table->string('source', 255)->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cash_flow');

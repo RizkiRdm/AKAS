@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,18 +10,14 @@ class CashFlow extends Model
 {
     use HasFactory;
 
+
     protected $table = 'cash_flow';
 
     protected $fillable = [
         'shift_id',
-        'tgl_flow',
-        'keterangan',
-        'masuk',
-        'keluar',
-    ];
-
-    protected $casts = [
-        'tgl_flow' => 'datetime',
+        'type',
+        'amount',
+        'source',
     ];
 
     public function shift(): BelongsTo
