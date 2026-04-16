@@ -24,11 +24,13 @@ class StoreProductRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'sku' => ['required', 'string', 'max:50', $rule],
+            'sku' => ['nullable', 'string', 'max:50', $rule],
             'category_id' => 'required|exists:categories,id',
             'unit_id' => 'required|exists:units,id',
             'supplier_id' => 'nullable|exists:suppliers,id',
-            'price' => 'required|numeric|min:0',
+            'initial_stock' => 'nullable|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|gt:purchase_price',
         ];
     }
 }

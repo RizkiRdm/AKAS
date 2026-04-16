@@ -17,7 +17,7 @@ class StockService
         return DB::transaction(function () use ($data) {
             $stockIn = StockIn::create([
                 'product_id' => $data['product_id'],
-                'user_id' => auth()->id() ?? 1, // Fallback for testing/console
+                'user_id' => auth()->id() ?? \App\Domain\Models\User::first()?->id ?? 1, // Fallback for testing/console
                 'qty' => $data['qty'],
                 'note' => $data['note'] ?? null,
             ]);

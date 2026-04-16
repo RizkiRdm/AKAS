@@ -32,6 +32,10 @@ class MasterStokController extends Controller
             ->latest()
             ->paginate(15);
 
+        if ($request->ajax()) {
+            return view('master-stok._table_rows', compact('products'))->render();
+        }
+
         $categories = Category::all();
         $units = Unit::all();
         $suppliers = Supplier::all();
@@ -43,7 +47,20 @@ class MasterStokController extends Controller
     public function storeProduct(StoreProductRequest $request)
     {
         try {
-            Product::create($request->validated());
+            $data = $request->validated();
+            $initialStock = $data['initial_stock'] ?? 0;
+            unset($data['initial_stock']);
+
+            $product = Product::create($data);
+
+            if ($initialStock > 0) {
+                $this->stockService->recordStockIn([
+                    'product_id' => $product->id,
+                    'qty' => $initialStock,
+                    'note' => 'Stok awal saat pembuatan produk'
+                ]);
+            }
+
             return back()->with('success', 'Produk berhasil ditambahkan.');
         } catch (\Exception $e) {
             Log::error('Error storing product: ' . $e->getMessage());
