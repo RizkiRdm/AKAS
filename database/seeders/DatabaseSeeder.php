@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // Create Admin
         User::factory()->create([
             'username' => 'admin',
-            'password' => Hash::make('admin123'),
+            'password' => Hash::make('Admin@123!'),
             'nama_pegawai' => 'Administrator',
             'role' => 'admin',
         ]);
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // Create Cashier
         User::factory()->create([
             'username' => 'cashier',
-            'password' => Hash::make('cashier123'),
+            'password' => Hash::make('Cashier@123!'),
             'nama_pegawai' => 'Kasir Utama',
             'role' => 'cashier',
         ]);

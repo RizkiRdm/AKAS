@@ -4,16 +4,14 @@ namespace Tests\Feature;
 
 use App\Domain\Models\Category;
 use App\Domain\Models\Product;
-use App\Domain\Models\Supplier;
 use App\Domain\Models\Unit;
 use App\Domain\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class MasterStokTest extends TestCase
 {
-    use RefreshDatabase, WithoutMiddleware;
+    use RefreshDatabase;
 
     protected User $user;
 
@@ -39,6 +37,7 @@ class MasterStokTest extends TestCase
             'sku' => 'KOPI-001',
             'category_id' => $category->id,
             'unit_id' => $unit->id,
+            'purchase_price' => 4000,
             'price' => 5000,
         ];
 
@@ -52,12 +51,13 @@ class MasterStokTest extends TestCase
     public function test_can_update_product()
     {
         $product = Product::factory()->create(['name' => 'Original Name']);
-        
+
         $data = [
             'name' => 'Updated Name',
             'sku' => $product->sku,
             'category_id' => $product->category_id,
             'unit_id' => $product->unit_id,
+            'purchase_price' => 5000,
             'price' => 6000,
         ];
 
@@ -82,7 +82,7 @@ class MasterStokTest extends TestCase
     public function test_stock_auto_updates_on_stock_in()
     {
         $product = Product::factory()->create(['stok' => 10]);
-        
+
         $data = [
             'product_id' => $product->id,
             'qty' => 5,

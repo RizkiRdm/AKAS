@@ -46,6 +46,12 @@
                     class="{{ request()->is('audit*') ? 'bg-slate-700 text-slate-100' : '' }} flex items-center gap-3 rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-700 hover:text-slate-100">
                     Audit Log
                 </a>
+                @can('manage-users')
+                <a href="/users"
+                    class="{{ request()->is('users*') ? 'bg-slate-700 text-slate-100' : '' }} flex items-center gap-3 rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-700 hover:text-slate-100">
+                    Manajemen User
+                </a>
+                @endcan
             </nav>
 
             {{-- User info bottom --}}
