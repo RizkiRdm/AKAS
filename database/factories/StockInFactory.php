@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
-use App\Models\StockIn;
-use App\Models\Supplier;
+use App\Domain\Models\Product;
+use App\Domain\Models\StockIn;
+use App\Domain\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StockInFactory extends Factory
@@ -14,11 +14,10 @@ class StockInFactory extends Factory
     public function definition(): array
     {
         return [
-            'tgl_masuk' => now(),
-            'id_supplier' => Supplier::factory(),
-            'id_brg' => Product::factory(),
-            'jumlah' => fake()->numberBetween(1, 100),
-            'total_harga' => fake()->numberBetween(10000, 1000000),
+            'product_id' => Product::factory(),
+            'user_id' => User::factory(),
+            'qty' => fake()->numberBetween(1, 100),
+            'note' => fake()->sentence(),
         ];
     }
 }

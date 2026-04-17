@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands;
 
-use App\Models\AuditLog;
-use App\Models\CashFlow;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Sale;
-use App\Models\Shift;
-use App\Models\StockIn;
-use App\Models\Supplier;
-use App\Models\Unit;
-use App\Models\User;
+use App\Domain\Models\AuditLog;
+use App\Domain\Models\CashFlow;
+use App\Domain\Models\Category;
+use App\Domain\Models\Product;
+use App\Domain\Models\Sale;
+use App\Domain\Models\Shift;
+use App\Domain\Models\StockIn;
+use App\Domain\Models\Supplier;
+use App\Domain\Models\Unit;
+use App\Domain\Models\User;
 use Illuminate\Console\Command;
 
 class SeedDataCommand extends Command

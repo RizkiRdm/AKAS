@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
-use App\Models\Sale;
-use App\Models\Shift;
-use App\Models\User;
+use App\Domain\Models\Sale;
+use App\Domain\Models\Shift;
+use App\Domain\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SaleFactory extends Factory
@@ -15,14 +14,11 @@ class SaleFactory extends Factory
     public function definition(): array
     {
         return [
-            'tgl_jual' => now(),
-            'id_brg' => Product::factory(),
-            'user_id' => User::factory(),
             'shift_id' => Shift::factory(),
-            'jumlah' => fake()->numberBetween(1, 10),
-            'total_bayar' => fake()->numberBetween(5000, 500000),
-            'payment_method' => fake()->randomElement(['cash', 'qris', 'ewallet', 'va']),
-            'payment_ref' => fake()->uuid(),
+            'user_id' => User::factory(),
+            'total' => fake()->numberBetween(10000, 500000),
+            'payment_method' => 'cash',
+            'payment_status' => 'completed',
         ];
     }
 }

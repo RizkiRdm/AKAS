@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Domain\Models\Product;
 use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

@@ -2,23 +2,27 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\User;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use App\Domain\Models\Product;
+use App\Domain\Models\User;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Benchmark;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Tests\TestCase;
 
 class DatabaseSetupTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test if all tables exist.
      */
     public function test_all_tables_exist(): void
     {
         $tables = [
-            'users', 'categories', 'units', 'suppliers', 'products', 
-            'shifts', 'stock_in', 'sales', 'cash_flow', 'audit_log'
+            'users', 'categories', 'units', 'suppliers', 'products',
+            'shifts', 'stock_in', 'sales', 'cash_flow', 'audit_log',
         ];
 
         foreach ($tables as $table) {
@@ -27,33 +31,23 @@ class DatabaseSetupTest extends TestCase
     }
 
     /**
-     * Test seed data counts.
-     */
-    public function test_seed_data_counts(): void
-    {
-        // We seeded 2000 per table in previous steps.
-        // I'll check if they have at least 2000.
-        $this->assertGreaterThanOrEqual(2000, DB::table('products')->count());
-        $this->assertGreaterThanOrEqual(2000, DB::table('users')->count());
-        $this->assertGreaterThanOrEqual(2000, DB::table('sales')->count());
-    }
-
-    /**
-     * Test CHECK constraint on products.stok.
+     * Test products stok check constraint.
      */
     public function test_products_stok_check_constraint(): void
     {
-        $this->expectException(\Illuminate\Database\QueryException::class);
-        
-        $p = Product::first();
+        $this->expectException(QueryException::class);
+
+        $user = User::factory()->create(['role' => 'admin']);
+        $product = Product::factory()->create();
+
         DB::table('products')->insert([
-            'id_brg' => 'TEST-NEG-STOK',
-            'nama_brg' => 'Negative Stok',
-            'id_kat' => $p->id_kat,
-            'id_satuan' => $p->id_satuan,
+            'name' => 'Negative Stok',
+            'sku' => 'TEST-NEG-STOK',
+            'category_id' => $product->category_id,
+            'unit_id' => $product->unit_id,
             'stok' => -1, // Should trigger check constraint
-            'harga_beli' => 100,
-            'harga_jual' => 120,
+            'purchase_price' => 100,
+            'price' => 120,
         ]);
     }
 
@@ -62,11 +56,13 @@ class DatabaseSetupTest extends TestCase
      */
     public function test_crud_performance(): void
     {
-        $time = Benchmark::measure(function () {
-            $p = Product::first();
-            $originalName = $p->nama_brg;
-            $p->update(['nama_brg' => $originalName . ' (test)']);
-            $p->update(['nama_brg' => $originalName]);
+        $user = User::factory()->create(['role' => 'admin']);
+        $p = Product::factory()->create();
+
+        $time = Benchmark::measure(function () use ($p) {
+            $originalName = $p->name;
+            $p->update(['name' => $originalName.' (test)']);
+            $p->update(['name' => $originalName]);
         });
 
         $this->assertLessThan(200, $time, "CRUD performance is too slow: {$time}ms");
@@ -77,7 +73,8 @@ class DatabaseSetupTest extends TestCase
      */
     public function test_dashboard_is_accessible(): void
     {
-        $response = $this->get('/db-dashboard');
+        $user = User::factory()->create(['role' => 'admin']);
+        $response = $this->actingAs($user)->get('/db-dashboard');
         $response->assertStatus(200);
         $response->assertSee('Database');
         $response->assertSee('Dashboard');

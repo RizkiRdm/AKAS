@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Domain\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoryFactory extends Factory
@@ -12,8 +12,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_kat' => 'KAT-'.fake()->unique()->numerify('#####'),
-            'nama_kat' => fake()->word(),
+            'name' => fake()->unique()->word(),
         ];
     }
 }
