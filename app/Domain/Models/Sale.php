@@ -17,6 +17,7 @@ class Sale extends Model
         'total',
         'payment_method',
         'payment_status',
+        'payment_ref',
     ];
 
     public function shift(): BelongsTo
@@ -27,5 +28,10 @@ class Sale extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SaleItem::class);
     }
 }

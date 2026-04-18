@@ -15,7 +15,7 @@ class ShiftFactory extends Factory
         return [
             'user_id' => User::factory(),
             'starting_float' => 500000,
-            'ending_cash' => null,
+            'ending_cash' => 0,
             'expected_cash' => 0,
             'status' => 'open',
         ];

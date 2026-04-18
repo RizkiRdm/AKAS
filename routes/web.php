@@ -52,4 +52,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/db-dashboard', [DatabaseDashboardController::class, 'index']);
+
+    Route::controller(\App\Http\Controllers\SalesController::class)->group(function () {
+        Route::get('/sales/pos', 'pos')->name('sales.pos');
+        Route::post('/sales', 'store')->name('sales.store');
+    });
 });
