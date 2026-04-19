@@ -10,7 +10,6 @@ class CashFlow extends Model
 {
     use HasFactory;
 
-
     protected $table = 'cash_flow';
 
     protected $fillable = [

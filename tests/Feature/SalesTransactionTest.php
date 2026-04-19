@@ -23,13 +23,13 @@ final class SalesTransactionTest extends TestCase
         $response = $this->actingAs($user)
             ->postJson(route('sales.store'), [
                 'items' => [
-                    ['product_id' => $product->id, 'qty' => 2]
+                    ['product_id' => $product->id, 'qty' => 2],
                 ],
                 'payment_method' => 'cash',
             ]);
 
         $response->assertStatus(201);
-        
+
         $this->assertDatabaseHas('sales', [
             'shift_id' => $shift->id,
             'user_id' => $user->id,
@@ -55,7 +55,7 @@ final class SalesTransactionTest extends TestCase
         $response = $this->actingAs($user)
             ->postJson(route('sales.store'), [
                 'items' => [
-                    ['product_id' => $product->id, 'qty' => 1]
+                    ['product_id' => $product->id, 'qty' => 1],
                 ],
                 'payment_method' => 'cash',
             ]);
@@ -73,7 +73,7 @@ final class SalesTransactionTest extends TestCase
         $response = $this->actingAs($user)
             ->postJson(route('sales.store'), [
                 'items' => [
-                    ['product_id' => $product->id, 'qty' => 10]
+                    ['product_id' => $product->id, 'qty' => 10],
                 ],
                 'payment_method' => 'cash',
             ]);
@@ -91,10 +91,10 @@ final class SalesTransactionTest extends TestCase
         $response = $this->actingAs($user)
             ->postJson(route('sales.store'), [
                 'items' => [
-                    ['product_id' => $product->id, 'qty' => 1]
+                    ['product_id' => $product->id, 'qty' => 1],
                 ],
                 'payment_method' => 'qris',
-                'payment_ref' => 'REF-12345'
+                'payment_ref' => 'REF-12345',
             ]);
 
         $response->assertStatus(201);

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Services;
 
-use App\Domain\Models\Sale;
 use App\Domain\Models\Product;
+use App\Domain\Models\Sale;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final class SaleService
 {
     /**
      * Create sale transaction.
-     * 
+     *
      * @param array{
      *   shift_id: int,
      *   user_id: int,
@@ -21,7 +20,6 @@ final class SaleService
      *   payment_method: string,
      *   payment_ref: ?string
      * } $data
-     * @return Sale
      */
     public function createSale(array $data): Sale
     {
@@ -39,8 +37,8 @@ final class SaleService
 
             foreach ($data['items'] as $item) {
                 $product = $products->get($item['product_id']);
-                
-                if (!$product) {
+
+                if (! $product) {
                     throw new \Exception("Product ID {$item['product_id']} not found.");
                 }
 

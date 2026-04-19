@@ -9,7 +9,6 @@ use App\Domain\Models\Shift;
 use App\Domain\Services\SaleService;
 use App\Http\Requests\StoreSaleRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -22,6 +21,7 @@ final class SalesController extends Controller
     public function pos(): View
     {
         $products = Product::with(['category', 'unit'])->get();
+
         return view('sales.pos', compact('products'));
     }
 
@@ -33,9 +33,9 @@ final class SalesController extends Controller
                 ->where('status', 'open')
                 ->first();
 
-            if (!$shift) {
+            if (! $shift) {
                 return response()->json([
-                    'message' => 'No active shift found. Please open a shift first.'
+                    'message' => 'No active shift found. Please open a shift first.',
                 ], 422);
             }
 
@@ -49,18 +49,18 @@ final class SalesController extends Controller
 
             return response()->json([
                 'message' => 'Sale created successfully',
-                'sale' => $sale
+                'sale' => $sale,
             ], 201);
 
         } catch (\Exception $e) {
             Log::error('Sale creation failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
 
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

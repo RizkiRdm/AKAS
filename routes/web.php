@@ -3,6 +3,8 @@
 use App\Http\Controllers\DatabaseDashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasterStokController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,8 +55,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/db-dashboard', [DatabaseDashboardController::class, 'index']);
 
-    Route::controller(\App\Http\Controllers\SalesController::class)->group(function () {
+    Route::controller(SalesController::class)->group(function () {
         Route::get('/sales/pos', 'pos')->name('sales.pos');
         Route::post('/sales', 'store')->name('sales.store');
+    });
+
+    Route::controller(ShiftController::class)->group(function () {
+        Route::get('/shift', 'index')->name('shift.index');
+        Route::post('/shift/start', 'start')->name('shift.start');
+        Route::post('/shift/{shift}/end', 'end')->name('shift.end');
     });
 });

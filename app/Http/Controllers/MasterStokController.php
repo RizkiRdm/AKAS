@@ -24,7 +24,7 @@ class MasterStokController extends Controller
         $products = Product::with(['category', 'unit', 'supplier'])
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
-                      ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('sku', 'like', "%{$search}%");
             })
             ->when($request->category_id, function ($query, $categoryId) {
                 $query->where('category_id', $categoryId);
@@ -57,41 +57,46 @@ class MasterStokController extends Controller
                 $this->stockService->recordStockIn([
                     'product_id' => $product->id,
                     'qty' => $initialStock,
-                    'note' => 'Stok awal saat pembuatan produk'
+                    'note' => 'Stok awal saat pembuatan produk',
                 ]);
             }
 
             return back()->with('success', 'Produk berhasil ditambahkan.');
         } catch (\Exception $e) {
-            Log::error('Error storing product: ' . $e->getMessage());
+            Log::error('Error storing product: '.$e->getMessage());
+
             return back()->with('error', 'Gagal menambahkan produk.');
         }
     }
 
     public function updateProduct(StoreProductRequest $request, $product)
     {
-        if (!$product instanceof Product) {
+        if (! $product instanceof Product) {
             $product = Product::findOrFail($product);
         }
         try {
             $product->update($request->validated());
+
             return back()->with('success', 'Produk berhasil diperbarui.');
         } catch (\Exception $e) {
-            Log::error('Error updating product: ' . $e->getMessage());
+            Log::error('Error updating product: '.$e->getMessage());
+
             return back()->with('error', 'Gagal memperbarui produk.');
         }
     }
 
     public function destroyProduct($product)
     {
-        if (!$product instanceof Product) {
+        if (! $product instanceof Product) {
             $product = Product::findOrFail($product);
         }
         try {
             $product->delete();
+
             return back()->with('success', 'Produk berhasil dihapus.');
         } catch (\Exception $e) {
-            Log::error('Error deleting product: ' . $e->getMessage());
+            Log::error('Error deleting product: '.$e->getMessage());
+
             return back()->with('error', 'Gagal menghapus produk.');
         }
     }
@@ -100,15 +105,17 @@ class MasterStokController extends Controller
     public function storeCategory(StoreCategoryRequest $request)
     {
         Category::create($request->validated());
+
         return back()->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function updateCategory(StoreCategoryRequest $request, $category)
     {
-        if (!$category instanceof Category) {
+        if (! $category instanceof Category) {
             $category = Category::findOrFail($category);
         }
         $category->update($request->validated());
+
         return back()->with('success', 'Kategori berhasil diperbarui.');
     }
 
@@ -116,6 +123,7 @@ class MasterStokController extends Controller
     public function storeUnit(StoreUnitRequest $request)
     {
         Unit::create($request->validated());
+
         return back()->with('success', 'Satuan berhasil ditambahkan.');
     }
 
@@ -123,6 +131,7 @@ class MasterStokController extends Controller
     public function storeSupplier(StoreSupplierRequest $request)
     {
         Supplier::create($request->validated());
+
         return back()->with('success', 'Supplier berhasil ditambahkan.');
     }
 
@@ -131,9 +140,11 @@ class MasterStokController extends Controller
     {
         try {
             $this->stockService->recordStockIn($request->validated());
+
             return back()->with('success', 'Stok berhasil ditambahkan.');
         } catch (\Exception $e) {
-            Log::error('Error recording stock in: ' . $e->getMessage());
+            Log::error('Error recording stock in: '.$e->getMessage());
+
             return back()->with('error', 'Gagal menambahkan stok.');
         }
     }

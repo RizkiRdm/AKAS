@@ -3,7 +3,6 @@
 namespace App\Domain\Observers;
 
 use App\Domain\Models\StockIn;
-use App\Domain\Models\Product;
 
 class StockInObserver
 {

@@ -11,7 +11,6 @@ class Product extends Model
 {
     use HasFactory;
 
-
     protected static function boot()
     {
         parent::boot();
@@ -20,7 +19,7 @@ class Product extends Model
             if (empty($product->sku)) {
                 $lastProduct = static::latest('id')->first();
                 $number = $lastProduct ? (int) substr($lastProduct->sku, 4) + 1 : 1;
-                $product->sku = 'BRG-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+                $product->sku = 'BRG-'.str_pad($number, 4, '0', STR_PAD_LEFT);
             }
         });
     }

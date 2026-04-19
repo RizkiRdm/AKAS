@@ -5,6 +5,7 @@ namespace App\Domain\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -49,12 +50,22 @@ class User extends Authenticatable
 
     protected static function newFactory()
     {
-        return \Database\Factories\UserFactory::new();
+        return UserFactory::new();
     }
 
     public function shifts(): HasMany
     {
         return $this->hasMany(Shift::class);
+    }
+
+    public function activeShift(): HasOne
+    {
+        return $this->hasOne(Shift::class)->where('status', 'open');
+    }
+
+    public function hasOpenShift(): bool
+    {
+        return $this->activeShift()->exists();
     }
 
     public function sales(): HasMany
